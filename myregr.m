@@ -22,8 +22,8 @@ function [slope,intercept,STAT]=myregr(x,y,varargin)
 %           - Residual Variability
 %           - Student's t-Test on Slope (to check if slope=0)
 %           - Student's t-Test on Intercept (to check if intercept=0)
-%           - Power of the regression
 %           - Modified Levene's test for homoschedasticity of residuals
+%           - Power of the regression
 %           - Deming's regeression
 %           - a plot with:
 %                o Data points
@@ -38,6 +38,9 @@ function [slope,intercept,STAT]=myregr(x,y,varargin)
 %
 %   [Slope,Intercept]=myregr(...) returns a structure of slope and intercept 
 %   containing value, standard error, lower and upper bounds 95% C.I.
+%
+%   [Slope,Intercept,STATS]= also returns a STATS structure with several
+%   informations.
 %
 % Example:
 %       x = [1.0 2.3 3.1 4.8 5.6 6.3];
