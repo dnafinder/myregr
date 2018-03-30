@@ -122,7 +122,7 @@ function [slope,intercept,STAT]=myregr(x,y,varargin)
 
 %Input error handling
 p = inputParser;
-addRequired(p,'x',@(x) validateattributes(x,{'numeric'},{'row','real','finite','nonnan','nonempty','increasing'}));
+addRequired(p,'x',@(x) validateattributes(x,{'numeric'},{'row','real','finite','nonnan','nonempty','nondecreasing'}));
 addRequired(p,'y',@(x) validateattributes(x,{'numeric'},{'2d','real','finite','nonnan','nonempty'}));
 addOptional(p,'verbose',1, @(x) isnumeric(x) && isreal(x) && isfinite(x) && isscalar(x) && (x==0 || x==1));
 parse(p,x,y,varargin{:});
