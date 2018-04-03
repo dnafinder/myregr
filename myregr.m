@@ -161,7 +161,8 @@ ytmp=yt;
 %check the presence of outliers
 outl=find(ismember(sign(Rint),[-1 1],'rows')==0);
 if ~isempty(outl) 
-    fprintf(['These points are outliers at 95%% fiducial level: ' repmat('%i ',1,length(outl)) '\n'],outl); 
+    disp('These points are outliers at 95% fiducial level')
+    disp(array2table([xtmp(outl) ytmp(outl)],'VariableNames',{'X' 'Y'}))
     reply = input('Do you want to delete outliers? Y/N [Y]: ', 's');
     disp(' ')
     if isempty(reply) || upper(reply)=='Y'
