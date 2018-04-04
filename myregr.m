@@ -132,7 +132,7 @@ x=x(:);
 if isvector(y)
     yt=y(:); %columns vectors
 else
-    yt=mean(y,2);
+    yt=mean(y)';
 end
 assert(length(x)==length(yt),'X and Y arrays must have the same numbers of columns.');
 
@@ -221,9 +221,9 @@ if isvector(y)
 else
     if ~isempty(outl) && (isempty(reply) || upper(reply)=='Y')
         y2=y; y2(outl)=[];
-        RSE=realsqrt((vres+sum(sum((y2-repmat(ytmp,1,size(y,2))).^2)))/(sum(size(y2))-3));
+        RSE=realsqrt((vres+sum(sum((y2-repmat(ytmp',size(y,1),1)).^2)))/(sum(size(y2))-3));
     else
-        RSE=realsqrt((vres+sum(sum((y-repmat(yt,1,size(y,2))).^2)))/(sum(size(y))-3));
+        RSE=realsqrt((vres+sum(sum((y-repmat(yt',size(y,1),1)).^2)))/(sum(size(y))-3));
     end
 end
 
