@@ -122,7 +122,7 @@ function [slope,intercept,STAT]=myregr(x,y,varargin)
 
 %Input error handling
 p = inputParser;
-addRequired(p,'x',@(x) validateattributes(x,{'numeric'},{'row','real','finite','nonnan','nonempty','nondecreasing'}));
+addRequired(p,'x',@(x) validateattributes(x,{'numeric'},{'row','real','finite','nonnan','nonempty'}));
 addRequired(p,'y',@(x) validateattributes(x,{'numeric'},{'2d','real','finite','nonnan','nonempty'}));
 addOptional(p,'verbose',1, @(x) isnumeric(x) && isreal(x) && isfinite(x) && isscalar(x) && (x==0 || x==1));
 parse(p,x,y,varargin{:});
@@ -190,6 +190,9 @@ m=[m pINT(1,:)]; %add slope 95% C.I.
 q(2)=(pINT(4)-p(2))/cv; %intercept standard error
 q=[q pINT(2,:)]; %add intercept 95% C.I.
 
+slope.value=m(1); slope.se=m(2); slope.lv=m(3); slope.uv=m(4);
+intercept.value=q(1); intercept.se=q(2); intercept.lv=q(3); intercept.uv=q(4);
+
 %Pearson's Correlation coefficient
 [rp,pr,rlo,rup]=corrcoef(xtmp,ytmp);
 r(1)=rp(2); r(2)=realsqrt((1-r(1)^2)/(n-2)); r(3)=rlo(2); r(4)=rup(2); 
@@ -236,6 +239,9 @@ cir=[ystar+cv*sy ystar-cv*sy];
 %x)
 sy2=realsqrt(sy.^2+RSE^2);
 cir2=[ystar+cv*sy2 ystar-cv*sy2];
+
+STAT.rse=RSE; STAT.cv=cv; STAT.n=n;
+STAT.xm=mean(x); STAT.ym=ym; STAT.sse=sum((xtmp-xm).^2); STAT.r=r;
 
 %display results
 if verbose==1
@@ -351,37 +357,4 @@ if verbose==1
         xl,1.96.*[RSE RSE],'m--',xl,-1.96.*[RSE RSE],'m--',...
         xl,2.58.*[RSE RSE],'r--',xl,-2.58.*[RSE RSE],'r--')
     axis square
-end
-
-switch nargout
-    case 1
-        slope.value=m(1);
-        slope.se=m(2);
-        slope.lv=m(3);
-        slope.uv=m(4);
-    case 2
-        slope.value=m(1);
-        slope.se=m(2);
-        slope.lv=m(3);
-        slope.uv=m(4);
-        intercept.value=q(1);
-        intercept.se=q(2);
-        intercept.lv=q(3);
-        intercept.uv=q(4);
-    case 3
-        slope.value=m(1);
-        slope.se=m(2);
-        slope.lv=m(3);
-        slope.uv=m(4);
-        intercept.value=q(1);
-        intercept.se=q(2);
-        intercept.lv=q(3);
-        intercept.uv=q(4);
-        STAT.rse=RSE;
-        STAT.cv=cv;
-        STAT.n=n;
-        STAT.xm=mean(x);
-        STAT.ym=ym;
-        STAT.sse=sum((xtmp-xm).^2);
-        STAT.r=r;
 end
